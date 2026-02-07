@@ -42,7 +42,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matteuccimarco/slim-pyramid-protocol.git"
+    "url": "git+https://github.com/matteuccimarco/slim-pyramid-protocol.git"
   },
   "bugs": {
     "url": "https://github.com/matteuccimarco/slim-pyramid-protocol/issues"
