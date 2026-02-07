@@ -1,0 +1,94 @@
+{
+  "_slim": {
+    "version": "2.1",
+    "level": 4,
+    "contentType": "conversation",
+    "generatedAt": "2026-02-07T15:45:00Z",
+    "sourceHash": "sha256:b2c3d4e5f6789012345678901234567890abcdef01",
+    "tokenCount": 312,
+    "availableLevels": [1, 2, 3, 4, 5, 7],
+    "ttlSeconds": 3600
+  },
+  "capabilities": ["query", "summarize", "extract", "cite"],
+  "contentType": "conversation",
+  "title": "API Design Discussion - Authentication Strategy",
+  "language": "en",
+  "length": {
+    "value": 28,
+    "unit": "messages"
+  },
+  "createdAt": "2026-02-05T09:00:00Z",
+  "description": "Team discussion about authentication strategy for the new public API.",
+  "outline": [
+    { "id": "phase1", "title": "Requirements Gathering", "level": 1 },
+    { "id": "phase2", "title": "Options Evaluation", "level": 1 },
+    { "id": "phase3", "title": "Decision & Next Steps", "level": 1 }
+  ],
+  "hasTimeline": true,
+  "phases": [
+    { "name": "Requirements", "range": "messages 1-8" },
+    { "name": "Design Options", "range": "messages 9-20" },
+    { "name": "Decision", "range": "messages 21-28" }
+  ],
+  "units": [
+    { "id": "m1-8", "type": "message", "parentId": "phase1", "tokenEstimate": 400 },
+    { "id": "m9-20", "type": "message", "parentId": "phase2", "tokenEstimate": 800 },
+    { "id": "m21-28", "type": "message", "parentId": "phase3", "tokenEstimate": 500 }
+  ],
+  "topics": [
+    "REST API",
+    "Authentication",
+    "JWT",
+    "OAuth 2.0",
+    "Rate Limiting",
+    "Security"
+  ],
+  "entities": [
+    { "name": "JWT", "type": "technology", "mentions": 15 },
+    { "name": "OAuth 2.0", "type": "technology", "mentions": 8 },
+    { "name": "API Gateway", "type": "technology", "mentions": 5 },
+    { "name": "Alice", "type": "person", "mentions": 12 },
+    { "name": "Bob", "type": "person", "mentions": 10 }
+  ],
+  "decisions": [
+    "Use JWT for authentication with 24h expiry",
+    "Implement sliding window rate limiting (100 req/min)",
+    "Return RFC 7807 Problem Details for errors",
+    "Support both API key and OAuth 2.0 flows"
+  ],
+  "summaries": {
+    "phase1": "Team identified requirements: must support both internal services and external partners, need audit logging, must handle 1000 req/min peak load.",
+    "phase2": "Evaluated JWT vs session-based auth, OAuth 2.0 vs API keys. Discussed trade-offs between security and developer experience.",
+    "phase3": "Decided on dual auth strategy: JWT for web clients, API keys for server-to-server. Rate limiting at API gateway level."
+  },
+  "keyFacts": [
+    "API will serve both internal and external clients",
+    "Expected peak load: 1000 requests/minute",
+    "Must support webhook callbacks for async operations",
+    "Compliance requires audit logging of all auth events",
+    "Mobile apps need refresh token support"
+  ],
+  "keyPoints": [
+    {
+      "point": "JWT chosen over session-based auth for stateless scaling",
+      "unitId": "m9-20",
+      "importance": "high"
+    },
+    {
+      "point": "Rate limiting implemented at gateway, not application level",
+      "unitId": "m21-28",
+      "importance": "high"
+    },
+    {
+      "point": "Refresh tokens stored in HTTP-only cookies for web clients",
+      "unitId": "m21-28",
+      "importance": "medium"
+    }
+  ],
+  "actionItems": [
+    "Create OpenAPI spec with auth definitions by Friday",
+    "Set up rate limiting middleware in API gateway",
+    "Document webhook payload format and signing",
+    "Implement audit logging for auth events"
+  ]
+}

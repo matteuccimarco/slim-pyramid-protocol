@@ -1,0 +1,474 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://slim-protocol.org/schema/v2.1/slim-pyramid.schema.json",
+  "title": "SLIM-PYRAMID Protocol",
+  "description": "Schema for SLIM-PYRAMID progressive content representation",
+  "type": "object",
+  "required": ["_slim", "capabilities"],
+
+  "properties": {
+    "_slim": {
+      "$ref": "#/$defs/SlimMetadata"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SlimCapability"
+      },
+      "minItems": 1
+    },
+    "contentType": {
+      "$ref": "#/$defs/SlimContentType"
+    },
+    "title": {
+      "type": "string",
+      "description": "Content title"
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+      "description": "ISO 639-1 language code"
+    },
+    "length": {
+      "$ref": "#/$defs/ContentLength"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "author": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "outline": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SlimOutlineEntry"
+      }
+    },
+    "hasTimeline": {
+      "type": "boolean"
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SlimPhase"
+      }
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SlimUnit"
+      }
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SlimEntity"
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "summaries": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "keyFacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "keyPoints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SlimKeyPoint"
+      }
+    },
+    "actionItems": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "schemas": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SlimSchema"
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/StructuredData"
+      }
+    },
+    "media": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/SlimMediaItem"
+      }
+    },
+    "mediaDescriptions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/SlimMediaDescription"
+      }
+    }
+  },
+
+  "$defs": {
+    "SlimMetadata": {
+      "type": "object",
+      "required": ["version", "level", "contentType", "generatedAt", "sourceHash", "tokenCount", "availableLevels"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$",
+          "description": "Protocol version"
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9,
+          "description": "Current pyramid level"
+        },
+        "contentType": {
+          "$ref": "#/$defs/SlimContentType"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Generation timestamp"
+        },
+        "sourceHash": {
+          "type": "string",
+          "description": "SHA-256 hash of original content"
+        },
+        "tokenCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Actual token count of this payload"
+        },
+        "availableLevels": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9
+          },
+          "description": "Which levels exist for this content"
+        },
+        "ttlSeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Suggested cache TTL"
+        }
+      }
+    },
+
+    "SlimCapability": {
+      "type": "string",
+      "enum": ["query", "summarize", "extract", "navigate", "cite", "compare", "analyze", "execute"]
+    },
+
+    "SlimContentType": {
+      "type": "string",
+      "enum": [
+        "article", "documentation", "report", "email",
+        "conversation", "code", "decision", "data",
+        "video", "image", "audio",
+        "mixed", "unknown"
+      ]
+    },
+
+    "ContentLength": {
+      "type": "object",
+      "required": ["value", "unit"],
+      "properties": {
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "enum": ["tokens", "words", "characters", "lines", "messages", "pages"]
+        }
+      }
+    },
+
+    "SlimOutlineEntry": {
+      "type": "object",
+      "required": ["id", "title", "level"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SlimOutlineEntry"
+          }
+        }
+      }
+    },
+
+    "SlimPhase": {
+      "type": "object",
+      "required": ["name", "range"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "range": {
+          "type": "string"
+        }
+      }
+    },
+
+    "SlimUnit": {
+      "type": "object",
+      "required": ["id", "type", "tokenEstimate"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["section", "message", "function", "class", "table", "figure", "quote"]
+        },
+        "parentId": {
+          "type": "string"
+        },
+        "tokenEstimate": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "preview": {
+          "type": "string"
+        }
+      }
+    },
+
+    "SlimEntity": {
+      "type": "object",
+      "required": ["name", "type", "mentions"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["person", "organization", "technology", "concept", "place", "date"]
+        },
+        "mentions": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+
+    "SlimKeyPoint": {
+      "type": "object",
+      "required": ["point", "unitId", "importance"],
+      "properties": {
+        "point": {
+          "type": "string"
+        },
+        "unitId": {
+          "type": "string"
+        },
+        "importance": {
+          "type": "string",
+          "enum": ["high", "medium", "low"]
+        }
+      }
+    },
+
+    "SlimSchema": {
+      "type": "object",
+      "required": ["id", "type", "definition"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["table", "list", "interface", "enum"]
+        },
+        "title": {
+          "type": "string"
+        },
+        "definition": {
+          "oneOf": [
+            { "$ref": "#/$defs/TableSchema" },
+            { "$ref": "#/$defs/ListSchema" },
+            { "$ref": "#/$defs/CodeSchema" }
+          ]
+        }
+      }
+    },
+
+    "TableSchema": {
+      "type": "object",
+      "required": ["columns", "rowCount"],
+      "properties": {
+        "columns": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "rowCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sampleRow": {
+          "type": "array"
+        }
+      }
+    },
+
+    "ListSchema": {
+      "type": "object",
+      "required": ["itemCount", "ordered"],
+      "properties": {
+        "itemCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ordered": {
+          "type": "boolean"
+        },
+        "sampleItems": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "CodeSchema": {
+      "type": "object",
+      "required": ["language", "exports"],
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "exports": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "signature": {
+          "type": "string"
+        }
+      }
+    },
+
+    "StructuredData": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["table", "list", "code"]
+        },
+        "rows": {
+          "type": "array",
+          "items": { "type": "array" }
+        },
+        "items": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+
+    "SlimMediaItem": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["image", "video", "audio", "document"]
+        },
+        "title": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "dimensions": {
+          "type": "object",
+          "properties": {
+            "width": { "type": "integer" },
+            "height": { "type": "integer" }
+          }
+        },
+        "duration": {
+          "type": "number",
+          "description": "Duration in seconds"
+        },
+        "unitId": {
+          "type": "string"
+        }
+      }
+    },
+
+    "SlimMediaDescription": {
+      "type": "object",
+      "required": ["description"],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "extractedText": {
+          "type": "string"
+        },
+        "objects": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "sentiment": {
+          "type": "string"
+        },
+        "transcript": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

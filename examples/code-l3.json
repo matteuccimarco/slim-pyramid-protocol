@@ -1,0 +1,51 @@
+{
+  "_slim": {
+    "version": "2.1",
+    "level": 3,
+    "contentType": "code",
+    "generatedAt": "2026-02-07T16:00:00Z",
+    "sourceHash": "sha256:c3d4e5f6789012345678901234567890abcdef0123",
+    "tokenCount": 156,
+    "availableLevels": [1, 2, 3, 4, 5, 7],
+    "ttlSeconds": 1800
+  },
+  "capabilities": ["query", "analyze", "extract", "execute"],
+  "contentType": "code",
+  "title": "slim-client.ts",
+  "language": "en",
+  "length": {
+    "value": 245,
+    "unit": "lines"
+  },
+  "createdAt": "2026-02-06T11:30:00Z",
+  "author": "developer@example.com",
+  "description": "TypeScript client library for consuming SLIM-PYRAMID content from APIs.",
+  "outline": [
+    { "id": "imports", "title": "Imports", "level": 1 },
+    { "id": "types", "title": "Type Definitions", "level": 1 },
+    { "id": "client", "title": "SlimClient Class", "level": 1 },
+    { "id": "utils", "title": "Utility Functions", "level": 1 },
+    { "id": "exports", "title": "Exports", "level": 1 }
+  ],
+  "units": [
+    { "id": "u:imports", "type": "section", "parentId": "imports", "tokenEstimate": 30 },
+    { "id": "u:types", "type": "section", "parentId": "types", "tokenEstimate": 80 },
+    { "id": "u:class", "type": "class", "parentId": "client", "tokenEstimate": 350 },
+    { "id": "u:fetch", "type": "function", "parentId": "client", "tokenEstimate": 120 },
+    { "id": "u:negotiate", "type": "function", "parentId": "client", "tokenEstimate": 80 },
+    { "id": "u:cache", "type": "function", "parentId": "utils", "tokenEstimate": 60 },
+    { "id": "u:exports", "type": "section", "parentId": "exports", "tokenEstimate": 20 }
+  ],
+  "topics": [
+    "HTTP client",
+    "content negotiation",
+    "caching",
+    "TypeScript",
+    "async/await"
+  ],
+  "entities": [
+    { "name": "SlimClient", "type": "technology", "mentions": 8 },
+    { "name": "fetch", "type": "technology", "mentions": 5 },
+    { "name": "SLIML4", "type": "technology", "mentions": 4 }
+  ]
+}
