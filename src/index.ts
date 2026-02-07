@@ -314,7 +314,7 @@ export function isSLIML0(payload: unknown): payload is SLIML0 {
  */
 export function isSLIML1(payload: unknown): payload is SLIML1 {
   if (!isSLIML0(payload)) return false;
-  const obj = payload as Record<string, unknown>;
+  const obj = payload as unknown as Record<string, unknown>;
   return (
     typeof obj.contentType === 'string' &&
     typeof obj.title === 'string' &&
@@ -327,7 +327,7 @@ export function isSLIML1(payload: unknown): payload is SLIML1 {
  */
 export function isSLIML2(payload: unknown): payload is SLIML2 {
   if (!isSLIML1(payload)) return false;
-  const obj = payload as Record<string, unknown>;
+  const obj = payload as unknown as Record<string, unknown>;
   return Array.isArray(obj.outline);
 }
 
@@ -336,7 +336,7 @@ export function isSLIML2(payload: unknown): payload is SLIML2 {
  */
 export function isSLIML3(payload: unknown): payload is SLIML3 {
   if (!isSLIML2(payload)) return false;
-  const obj = payload as Record<string, unknown>;
+  const obj = payload as unknown as Record<string, unknown>;
   return Array.isArray(obj.units);
 }
 
@@ -345,7 +345,7 @@ export function isSLIML3(payload: unknown): payload is SLIML3 {
  */
 export function isSLIML4(payload: unknown): payload is SLIML4 {
   if (!isSLIML3(payload)) return false;
-  const obj = payload as Record<string, unknown>;
+  const obj = payload as unknown as Record<string, unknown>;
   return (
     typeof obj.summaries === 'object' &&
     obj.summaries !== null &&
@@ -358,7 +358,7 @@ export function isSLIML4(payload: unknown): payload is SLIML4 {
  */
 export function isSLIML5(payload: unknown): payload is SLIML5 {
   if (!isSLIML4(payload)) return false;
-  const obj = payload as Record<string, unknown>;
+  const obj = payload as unknown as Record<string, unknown>;
   return typeof obj.contents === 'object' && obj.contents !== null;
 }
 
@@ -367,7 +367,7 @@ export function isSLIML5(payload: unknown): payload is SLIML5 {
  */
 export function isSLIML6(payload: unknown): payload is SLIML6 {
   if (!isSLIML5(payload)) return false;
-  const obj = payload as Record<string, unknown>;
+  const obj = payload as unknown as Record<string, unknown>;
   return Array.isArray(obj.schemas);
 }
 
@@ -376,7 +376,7 @@ export function isSLIML6(payload: unknown): payload is SLIML6 {
  */
 export function isSLIML7(payload: unknown): payload is SLIML7 {
   if (!isSLIML6(payload)) return false;
-  const obj = payload as Record<string, unknown>;
+  const obj = payload as unknown as Record<string, unknown>;
   return typeof obj.data === 'object' && obj.data !== null;
 }
 
@@ -385,7 +385,7 @@ export function isSLIML7(payload: unknown): payload is SLIML7 {
  */
 export function isSLIML8(payload: unknown): payload is SLIML8 {
   if (!isSLIML7(payload)) return false;
-  const obj = payload as Record<string, unknown>;
+  const obj = payload as unknown as Record<string, unknown>;
   return Array.isArray(obj.media);
 }
 
@@ -394,7 +394,7 @@ export function isSLIML8(payload: unknown): payload is SLIML8 {
  */
 export function isSLIML9(payload: unknown): payload is SLIML9 {
   if (!isSLIML8(payload)) return false;
-  const obj = payload as Record<string, unknown>;
+  const obj = payload as unknown as Record<string, unknown>;
   return typeof obj.mediaDescriptions === 'object' && obj.mediaDescriptions !== null;
 }
 

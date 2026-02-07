@@ -1,0 +1,54 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Copy specification to docs
+        run: |
+          cp SPECIFICATION.md docs/SPECIFICATION.md
+          cp -r examples docs/examples
+          cp -r schema docs/schema
+
+      - name: Convert Markdown to HTML
+        run: |
+          npm install -g marked
+          echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>SLIM-PYRAMID Specification</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown-dark.min.css"><style>body{background:#0a0a0a;padding:40px;}.markdown-body{max-width:900px;margin:0 auto;}</style></head><body class="markdown-body">' > docs/SPECIFICATION.html
+          marked docs/SPECIFICATION.md >> docs/SPECIFICATION.html
+          echo '</body></html>' >> docs/SPECIFICATION.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
